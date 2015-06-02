@@ -9,28 +9,30 @@ library(dplyr)
 # Get the authorization token from xForce Exchange. Save the token in the curl
 # options for use on all xForce API calls.
 
-xfe_auth = getURL("https://xforce-api.mybluemix.net/auth/anonymousToken")
-token = fromJSON(xfe_auth)
+xfe_auth = fromJSON(getURL("https://xforce-api.mybluemix.net/auth/anonymousToken"))
 curl.opts <- list(httpheader = c("Accept-Language" = "en-US",
                                  "Accept-Encoding" = "gzip",
-                                 "Authorization" = paste("Bearer", token),
+                                 "Authorization" = paste("Bearer", xfe_auth$token),
                                  "Accept" = "application/json"))
 
 # Call xForce to return the list of all known applications in JSON format.
-# "Unlist" them to create a character vector of the application names.
+# JASON key "canonicalNames" holds the list of application names.
 
-appList <- unlist(fromJSON(getURL("https://xforce-api.mybluemix.net/app", 
-                                  .opts = curl.opts)), use.names=FALSE)
+appList <- fromJSON(getURL("https://xforce-api.mybluemix.net/app", 
+                                  .opts = curl.opts))
 
 # Create the final receiving data frame to be used in plotting and loop through
 # the list of applications known to xForce, retrieving details for each
-# application. Set application risk to "5" is it is missing from xForce.
+# application. Set application risk to "5" if it is missing from xForce.
 
 appData <- data.frame()
 
 # appList <- list("dropbox", "GOAL")
-for (appName in appList) {
-    
+# for (appName in appList) { 
+#     print(appName)
+
+for (appName in appList$canonicalNames) {
+   
     # Replace spaces in URLs  
     appName <- gsub(" ", "%20", appName)        
     
@@ -43,15 +45,21 @@ for (appName in appList) {
         appDetail$application$score <- "5"
     }
     
-    # Accumulate the data table for plotting
+    # Accumulate the data table for plotting.
+    # Note that JSON keys map to R "name" when using fromJSON function.
     appData <- rbind(appData, matrix(list(
-                                as.character(appDetail$application$name), 
+                                "Application",
+                                appDetail$application$name,
+                                appDetail$application$description,
+                                names(appDetail$application$categories),
+                                names(appDetail$application$actions),
+                                names(appDetail$application$rlfs),
                                 as.numeric(appDetail$application$score)),
-                                nrow = 1, ncol = 2))
+                                nrow = 1, ncol = 7))
 }
 
 # Add column names to make it easier to work with.
-colnames(appData) <- list("Name", "Score")
+colnames(appData) <- list("Type", "Name", "Description", "Categories", "Actions", "Rilfs", "Score")
 
 # Plot the histogram of xForce risk scores. 
 x <- as.vector(appData$Score, mode="numeric")
@@ -59,8 +67,8 @@ h <- hist(x, breaks=10, col="red", xlab="xForce Risk Scores",
           main="Distribution of Risk Scores for xForce Exchange Applications")
 
 # Add a distribution curve.
-xfit<-seq(min(x),max(x),length=40) 
-yfit<-dnorm(xfit,mean=mean(x),sd=sd(x)) 
+xfit <-seq(min(x),max(x),length=40) 
+yfit <-dnorm(xfit,mean=mean(x),sd=sd(x)) 
 yfit <- yfit*diff(h$mids[1:2])*length(x) 
 lines(xfit, yfit, col="blue", lwd=2)
 
