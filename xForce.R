@@ -27,10 +27,6 @@ appList <- fromJSON(getURL("https://xforce-api.mybluemix.net/app",
 
 appData <- data.frame()
 
-# appList <- list("dropbox", "GOAL")
-# for (appName in appList) { 
-#     print(appName)
-
 for (appName in appList$canonicalNames) {
    
     # Replace spaces in URLs  
