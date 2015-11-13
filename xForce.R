@@ -11,15 +11,15 @@ library(dplyr)
 
 xfe_auth = fromJSON(getURL("https://xforce-api.mybluemix.net/auth/anonymousToken"))
 curl.opts <- list(httpheader = c("Accept-Language" = "en-US",
-                                 "Accept-Encoding" = "gzip",
                                  "Authorization" = paste("Bearer", xfe_auth$token),
                                  "Accept" = "application/json"))
 
 # Call xForce to return the list of all known applications in JSON format.
 # JASON key "canonicalNames" holds the list of application names.
 
-appList <- fromJSON(getURL("https://xforce-api.mybluemix.net/app", 
-                                  .opts = curl.opts))
+#appList <- fromJSON(getURL("https://xforce-api.mybluemix.net/app", 
+appList <- fromJSON(getURL("https://api.xforce.ibmcloud.com/app/",
+                           .opts = curl.opts))
 
 # Create the final receiving data frame to be used in plotting and loop through
 # the list of applications known to xForce, retrieving details for each
@@ -28,7 +28,6 @@ appList <- fromJSON(getURL("https://xforce-api.mybluemix.net/app",
 appData <- data.frame()
 
 for (appName in appList$canonicalNames) {
-   
     # Replace spaces in URLs  
     appName <- gsub(" ", "%20", appName)        
     
