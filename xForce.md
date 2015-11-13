@@ -1,8 +1,6 @@
-# | Distribution of Application Risk Scores 
-| in IBM X-Force Exchange 
-
-Brian Matthiesen  
-10 November 2015  
+# Distribution of Application Risk Scores in IBM X-Force Exchange 
+### Author:  Brian Matthiesen
+### November 2015
 _ _ _
 
 <a name="top-page"/>  
@@ -95,7 +93,7 @@ We call the X-Force API to retrieve these scores along with additional data such
 
 appData <- data.frame()
 
-for (appName in appList$canonicalNames[1:50]) {
+for (appName in appList$canonicalNames[1:20]) {
     # Replace spaces in URLs  
     appName <- gsub(" ", "%20", appName)        
     
@@ -134,27 +132,27 @@ head(appData[, c(2,7)],20)
 ```
 
 ```
-##              Name Score
-## 1       @CREATORZ   2.6
-## 2           @flab   4.5
-## 3          @nifty   1.5
-## 4          @PAINT   2.5
-## 5      1-2-sports   2.6
-## 6  1&1 Smartdrive   2.7
-## 7             115   2.9
-## 8            11ST     1
-## 9           123RF     1
-## 10 1click4you.com     4
-## 11      1email.eu     4
-## 12   1fichier.com   2.6
-## 13   20minutes.fr   3.2
-## 14             23   2.6
-## 15            2ch   2.5
-## 16        2shared   2.9
-## 17            360   1.1
-## 18       43Things   5.6
-## 19         47news     1
-## 20          4chan   2.9
+##    Name Score
+## 1  NULL     5
+## 2  NULL     5
+## 3  NULL     5
+## 4  NULL     5
+## 5  NULL     5
+## 6  NULL     5
+## 7  NULL     5
+## 8  NULL     5
+## 9  NULL     5
+## 10 NULL     5
+## 11 NULL     5
+## 12 NULL     5
+## 13 NULL     5
+## 14 NULL     5
+## 15 NULL     5
+## 16 NULL     5
+## 17 NULL     5
+## 18 NULL     5
+## 19 NULL     5
+## 20 NULL     5
 ```
 
 ```r
@@ -162,14 +160,8 @@ appData[1,]
 ```
 
 ```
-##          Type      Name                Description
-## 1 Application @CREATORZ Social network for artists
-##                 Categories
-## 1 Social Networking, Cloud
-##                                              Actions
-## 1 Write/Post/Chat, Stream/Download, Share, Start App
-##                                     Rilfs Score
-## 1 upload possible, insecure communication   2.6
+##          Type Name Description Categories Actions Rilfs Score
+## 1 Application NULL        NULL       NULL    NULL  NULL     5
 ```
 
 _ _ _ _ _ _ _ _ _ _ _
@@ -192,7 +184,7 @@ summary(x)
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##    1.00    1.00    2.55    2.43    3.10    7.00
+##       5       5       5       5       5       5
 ```
 
 ```r
@@ -214,7 +206,7 @@ _ _ _ _ _ _ _ _ _ _ _
 <a name="recommend"/>
 
 ## Recommendations
-The data support our hypothesis that the bulk of the applications are clustered within a narrow band of scores at the low end of the range with relatively few high-risk applications at the margin. The data are distributed with a median of 2.55 with a few high-risk applications with a maximum of 7. 
+The data support our hypothesis that the bulk of the applications are clustered within a narrow band of scores at the low end of the range with relatively few high-risk applications at the margin. The data are distributed with a median of 5 with a few high-risk applications with a maximum of 5. 
 
 
 [[Top](#top-page)]  

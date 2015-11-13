@@ -1,15 +1,13 @@
 ---
-title: |
-  | Distribution of Application Risk Scores 
-  | in IBM X-Force Exchange 
-author: "Brian Matthiesen" 
-date:  10 November 2015 
 output: 
   html_document:
     theme: readable
     highlight: textmate
     keep_md: true
 ---
+# Distribution of Application Risk Scores in IBM X-Force Exchange 
+### Author:  Brian Matthiesen
+### November 2015
 _ _ _
 
 <a name="top-page"/>  
